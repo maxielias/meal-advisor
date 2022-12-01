@@ -70,13 +70,13 @@ with st.container():
             filter_recipe_by_area = selectbox("Select country", list_of_areas)
 
             if filter_recipe_by_category and filter_recipe_by_area:
-                meal_options_df = list(set(meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category) & (meal_options_df["strArea"]==filter_recipe_by_area)]))
+                meal_options_df = meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category) & (meal_options_df["strArea"]==filter_recipe_by_area)]
 
             elif filter_recipe_by_category:
-                meal_options_df = list(set(meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category)]))
+                meal_options_df = meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category)]
 
             elif filter_recipe_by_category:
-                meal_options_df = list(set(meal_options_df[(meal_options_df["strArea"]==filter_recipe_by_area)]))
+                meal_options_df = meal_options_df[(meal_options_df["strArea"]==filter_recipe_by_area)]
         
-            filtered_recipes = selectbox("Select meal", list(set([m for m in meal_options_df["strMeal"]])))
+            filtered_recipes = selectbox("Select meal", [m for m in meal_options_df["strMeal"]])
             
