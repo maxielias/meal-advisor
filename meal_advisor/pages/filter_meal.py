@@ -40,7 +40,6 @@ with open("meal_advisor/data/list_of_ingredients.txt", encoding="utf-8") as f:
 
 
 #---- PARAMETERS ----
-placeholder = st.empty()
 
 #---- HEADER SECTION ----
 st.title("Let's search for a recipe, Mr. Meal Advisor :sunglasses:")
@@ -48,9 +47,15 @@ st.title("Let's search for a recipe, Mr. Meal Advisor :sunglasses:")
 
 #---- CONTAINER 1 ----
 with st.container():
+    
     with open("meal_advisor/style/dataframe.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
         st.header("Filter meals by main ingredient, category and area")
+
+        reset_button = st.button("Reset options") #, on_click=st.experimental_rerun())
+
+        if reset_button:
+            st.experimental_rerun()
         
         ingredient_list = list_of_ingredients
         filter_recipe_by_ingredient = selectbox("Select main ingredient", list_of_ingredients)
@@ -66,17 +71,13 @@ with st.container():
             filter_recipe_by_area = selectbox("Select country", list_of_areas)
 
             if filter_recipe_by_category and filter_recipe_by_area:
-                meal_options_df = meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category) & (meal_options_df["strArea"]==filter_recipe_by_area)]
+                meal_options_df = list(set(meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category) & (meal_options_df["strArea"]==filter_recipe_by_area)]))
 
             elif filter_recipe_by_category:
-                meal_options_df = meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category)]
+                meal_options_df = list(set(meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category)]))
 
             elif filter_recipe_by_category:
-                meal_options_df = meal_options_df[(meal_options_df["strArea"]==filter_recipe_by_area)]
+                meal_options_df = list(set(meal_options_df[(meal_options_df["strArea"]==filter_recipe_by_area)]))
         
-            filtered_recipes = selectbox("Select meal", [m for m in meal_options_df["strMeal"]])
-
-        reset_button = st.button("Reset options")
-        if reset_button:
-            pyautogui.hotkey("ctrl","F5")
-
+            filtered_recipes = selectbox("Select meal", list(set([m for m in meal_options_df["strMeal"]])))
+            
