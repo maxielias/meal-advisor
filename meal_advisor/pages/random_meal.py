@@ -11,7 +11,7 @@ from streamlit_extras.no_default_selectbox import selectbox
 from streamlit.delta_generator import DeltaGenerator
 from PIL import Image
 from typing import Optional
-from config_files.api_keys import nutritionix_app_id, nutritionix_api_key
+# from config_files.api_keys import nutritionix_app_id, nutritionix_api_key
 from functions import get_random_meal_api
 
 

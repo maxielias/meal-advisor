@@ -7,7 +7,7 @@ from streamlit_lottie import st_lottie
 from annotated_text import annotated_text
 from streamlit_extras.switch_page_button import switch_page
 from PIL import Image
-from config_files.api_keys import nutritionix_app_id, nutritionix_api_key
+# from config_files.api_keys import nutritionix_app_id, nutritionix_api_key
 
 
 # CONFIG SETUP
