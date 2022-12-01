@@ -1,7 +1,0 @@
-{
-    "db": "meal_advisor",
-    "user": "postgres",
-    "password": "postgres",
-    "localhost": "localhost",
-    "port": "5432"
-}

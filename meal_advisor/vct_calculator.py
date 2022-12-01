@@ -47,7 +47,7 @@ def calculate_bmr(gender:bool, age:float, weight:float, height:float, activity_f
 
     elif method == 1:
         s = 5 if gender else -161
-        # Mifflin St Jeor Equation
+        # Mifflin St Jeor Formula
         bmr = (10 * weight + 6.25 * height - 5 * age + s) * params["activityFactor"][activity_factor][0]
 
     return round(bmr, 0)
@@ -94,7 +94,7 @@ def calculate_macros(bmr:float):
     return  macros_required
 
 
-if __name__== '__main__':
+'''if __name__== '__main__':
 
     fp = calculate_fat_perc(gender=True, height=172, neck=40, waist=86, hip=93)
     bmr1 = calculate_bmr(gender=True, age=37, weight=70, height=171, activity_factor=4)
@@ -108,4 +108,4 @@ if __name__== '__main__':
         f'Daily intakes of carbs={macros_required["carbs"][0]} (in gr)\n'
         f'Daily intakes of proteins={macros_required["proteins"][0]} (in gr)\n'
         f'Daily intakes of fat={macros_required["fat"][0]} (in gr)\n'
-    )
+    )'''
