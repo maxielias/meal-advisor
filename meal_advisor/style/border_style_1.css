@@ -1,0 +1,20 @@
+img {
+  border: 10px solid rgb(92 65 93 1);
+  border-radius: 10px;
+}
+
+/*.element {
+  rgb(219 208 83)
+  border-image-source: url(https://imgs.search.brave.com/7ugI348kK6KlPDgOV2nBUxTGvzqV4eRpSLEp0uk54y0/rs:fit:525:690:1/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vNzM2/eC85OS8xNC8xOC85/OTE0MTg0OTQwMjk3/YmVlNzkwYTZhZGQ3/MjNjYTc1MC5qcGc);
+  border-image-slice: 20;
+  border-image-width: 20;
+  border-image-outset: 1;
+  border-image-repeat: round;
+}
+
+/*div.css-1r6slb0.e1tzin5v2 {
+  background-color: #EEEEEE;
+  border: 10px solid #b584ff;
+  padding: 5% 5% 5% 10%;
+  border-radius: 10px;
+}

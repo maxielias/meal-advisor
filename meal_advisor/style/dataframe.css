@@ -1,0 +1,31 @@
+.mystyle {
+    font-size: 11pt; 
+    font-family: Arial;
+    border-collapse: collapse; 
+    border: 1px solid silver;
+
+}
+
+.mystyle td, th {
+    padding: 5px;
+}
+
+.mystyle tr:nth-child(even) {
+    background: #E0E0E0;
+}
+
+.mystyle tr:hover {
+    background: silver;
+    cursor: pointer;
+}
+
+/*.dataframe th{
+background: rgb(18, 255, 251);
+background: linear-gradient(0deg, rgb(52, 255, 252) 0%, rgb(161, 255, 253) 100%);
+padding: 10px;
+font-family: arial;
+font-size: 120%;
+color: white;
+border:2px solid white;
+text-align:left !important;
+}

@@ -1,0 +1,15 @@
+.container {
+  width: 100%;
+  background: rgb(159, 144, 175);
+  aspect-ratio: 100 / 29;
+  border: 10px solid rgb(92 65 93 1);
+  border-radius: 10px;
+}
+
+.span-container {
+  width: 100%;
+  background: rgb(159, 144, 175);
+  aspect-ratio: 100 / 29;
+  border: 10px solid rgb(92 65 93 1);
+  border-radius: 10px;
+}
