@@ -14,7 +14,6 @@ from PIL import Image
 from typing import Optional
 # from config_files.api_keys import google_user, google_api_key, nutritionix_app_id, nutritionix_api_key
 from functions import get_random_meal_api, filter_mealdb_ingredients
-import pyautogui
 
 
 #---- CONFIG SETUP ----

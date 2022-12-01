@@ -34,7 +34,6 @@ st-annotated-text = "^3.0.0"
 streamlit-extras = "^0.2.4"
 Google-Images-Search = "^1.4.6"
 st-card-component = "^0.0.10"
-PyAutoGUI = "^0.9.53"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.2.0"
