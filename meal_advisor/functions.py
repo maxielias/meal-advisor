@@ -3,7 +3,7 @@ import re
 import pandas as pd
 import numpy as np
 import requests
-from config_files.api_keys import google_user, google_api_key, nutritionix_app_id, nutritionix_api_key
+# from config_files.api_keys import google_user, google_api_key, nutritionix_app_id, nutritionix_api_key
 
 
 def get_mealdb_categories():
