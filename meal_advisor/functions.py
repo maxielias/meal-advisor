@@ -79,23 +79,3 @@ def filter_mealdb_ingredients(data_json, ingredient:str):
     data_filtered_by_ingredient = [d for d in data_json for i in filter if d[i[0]]==i[1]]
 
     return data_filtered_by_ingredient
-
-
-def get_daily_meal_plan(df, filter_col, filters, qty, tot_cal, sum_col):
-    '''condition = True
-    while condition:'''
-    df_meal_plan = pd.DataFrame([], columns=df.columns)
-    for f in filters:
-        if isinstance(f, list):
-            df_filtered = df[df[filter_col].isin(f)]
-        else:
-            df_filtered = df[df[filter_col]==f]
-        if df_filtered.empty:
-            pass
-        else:
-            df_filtered = df_filtered.sample(n=qty, random_state=0)
-            df_meal_plan = pd.concat([df_meal_plan, df_filtered])# df_meal_plan.append(df_filtered)
-            '''if tot_cal * 0.9 > df_meal_plan[sum_col].sum() > tot_cal * 1.1:
-                condition=False'''
-
-    return df_meal_plan

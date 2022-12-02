@@ -94,6 +94,26 @@ def calculate_macros(bmr:float):
     return  macros_required
 
 
+def get_daily_meal_plan(df, filter_col, filters, qty, tot_cal, sum_col):
+    '''condition = True
+    while condition:'''
+    df_meal_plan = pd.DataFrame([], columns=df.columns)
+    for f in filters:
+        if isinstance(f, list):
+            df_filtered = df[df[filter_col].isin(f)]
+        else:
+            df_filtered = df[df[filter_col]==f]
+        if df_filtered.empty:
+            pass
+        else:
+            df_filtered = df_filtered.sample(n=qty, random_state=0)
+            df_meal_plan = pd.concat([df_meal_plan, df_filtered])# df_meal_plan.append(df_filtered)
+            '''if tot_cal * 0.8 > df_meal_plan[sum_col].sum() > tot_cal * 1.2:
+                condition=False'''
+
+    return df_meal_plan
+
+
 '''if __name__== '__main__':
 
     fp = calculate_fat_perc(gender=True, height=172, neck=40, waist=86, hip=93)
