@@ -29,7 +29,8 @@ def load_lottie_assets(url):
     return r.json()
 
 
-#---- LOAD CSS ----
+#---- LOAD DATA ----
+df_recipes = pd.read_csv("meal_advisor/data/recipes_clean_healthyfitnessmeals.csv", header=0)
 
 
 #---- HEADER SECTION ----
@@ -44,7 +45,10 @@ with st.container():
     
     with left_column:
         gender_selection = selectbox("Select gender", ["Male", "Female"])
+        gender_bool = 0 if gender_selection == "Male" else 1
         age_selection = st.text_input("Input age")
+        method_selection = selectbox("Select calculation method", ["Katch-McArdle Formula", "Mifflin St Jeor Formula"])
+        method_int = 0 if method_selection == 0 else 1
     
     with center_column:    
         weight_selection = st.text_input("Input weight (in kg)")
@@ -56,16 +60,35 @@ with st.container():
         waist_selection = st.text_input("Input waist (in cm)")
         hip_selection = st.text_input("Input hip (in cm)")
 
-    st.write("---")
+    try:
+        age_input = float(age_selection)
+        weight_input = float(weight_selection)
+        height_input = float(height_selection)
+        neck_input = float(neck_selection)
+        waist_input = float(waist_selection)
+        hip_input = float(hip_selection)
 
-with st.container():
-    fp = calculate_fat_perc(gender=True, height=172, neck=40, waist=86, hip=93)
-    bmr1 = calculate_bmr(gender=True, age=37, weight=70, height=171, activity_factor=4)
-    bmr2 = calculate_bmr(method=1, gender=True, age=37, weight=70, height=171, activity_factor=4, fat_perc=fp)
-    macros_required = calculate_macros(bmr1)
+    except:
+        pass
 
-    st.write("Calculation's summary")
-    st.write(fp)
-    st.write(bmr1)
-    st.write(bmr2)
-    st.write(macros_required)
+    calculate_button = st.button("Calculate calories")
+    if calculate_button:
+        st.write("---")
+        with st.container():
+            fp = calculate_fat_perc(gender=gender_bool, height=height_input, neck=neck_input, waist=waist_input, hip=hip_input)
+            bmr = calculate_bmr(method=method_int, gender=gender_bool, age=age_input, weight=weight_input, height=height_input, activity_factor=activity_factor_slider, fat_perc=fp)
+            macros_required = calculate_macros(bmr)
+
+            carbs_gr = macros_required["carbs"][0]
+            proteins_gr = macros_required["proteins"][0]
+            fat_gr = macros_required["fat"][0]
+
+            st.write("Calculation's summary")
+        
+            st.write(f"Recommended carbs intake is {carbs_gr} gr daily")
+            st.write(f"Recommended proteins intake is {proteins_gr} gr daily")
+            st.write(f"Recommended fat intake is {fat_gr} gr daily")
+
+            recipes_suggestion = df_recipes["title"][df_recipes["calories"]<=carbs_gr]
+            st.write(recipes_suggestion)
+

@@ -43,12 +43,12 @@ def calculate_bmr(gender:bool, age:float, weight:float, height:float, activity_f
     if method == 0:
         # Katch-McArdle Formula
         # lbm = weight * (100 - fat_perc) / 100
-        bmr = (370 + 21.6 * lbm) * params["activityFactor"][activity_factor][0]
+        bmr = (370 + 21.6 * lbm) * params["activityFactor"][activity_factor-1][0]
 
     elif method == 1:
         s = 5 if gender else -161
         # Mifflin St Jeor Formula
-        bmr = (10 * weight + 6.25 * height - 5 * age + s) * params["activityFactor"][activity_factor][0]
+        bmr = (10 * weight + 6.25 * height - 5 * age + s) * params["activityFactor"][activity_factor-1][0]
 
     return round(bmr, 0)
 

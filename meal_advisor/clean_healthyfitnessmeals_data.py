@@ -87,10 +87,6 @@ if __name__ == "__main__":
     df.columns = change_symbols_in_column_names(df)
     df["servings"] = servings_to_int(df, "servings")
     df["calories"] = calories_to_int(df, "calories")
-
-
-    print(df.to_json)
-
-    outpath = here.joinpath("data/recipes_clean_healthyfitnessmeals.json")
-    with open(outpath, "w", encoding="utf-8") as jsonfile:
-        jsonfile = json.dumps(df.to_json, indent=4)
+    
+    outpath = here.joinpath("data/recipes_clean_healthyfitnessmeals.csv")
+    df.to_csv(outpath, index=False)
