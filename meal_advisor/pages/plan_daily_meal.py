@@ -13,8 +13,8 @@ from streamlit.delta_generator import DeltaGenerator
 from PIL import Image
 from typing import Optional
 # from config_files.api_keys import google_user, google_api_key, nutritionix_app_id, nutritionix_api_key
-from functions import get_random_meal_api, filter_mealdb_ingredients, get_daily_meal_plan
-from vct_calculator import calculate_bmr, calculate_fat_perc, calculate_macros
+from functions import get_random_meal_api, filter_mealdb_ingredients
+from vct_calculator import calculate_bmr, calculate_fat_perc, calculate_macros, get_daily_meal_plan
 
 
 # CONFIG SETUP
