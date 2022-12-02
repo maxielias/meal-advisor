@@ -145,14 +145,15 @@ async def fetch_url(url: str, session: ClientSession, **kwargs) -> str:
     return html
 
 
-async def parse(url: str, session: ClientSession, **kwargs) -> set:
+async def parse(url: str, session: ClientSession, semaphore, **kwargs) -> set:
     """Find HREFs in the HTML of 'url'."""
     data = dict()
     category = category_meal_link.loc[category_meal_link["link"]==url, "category"].values[0]
 
     try:
-        resp = await fetch_url(url=url, session=session, **kwargs)
-        soup = BeautifulSoup(resp, "html.parser")
+        async with semaphore:
+            resp = await fetch_url(url=url, session=session, **kwargs)
+            soup = BeautifulSoup(resp, "html.parser")
     except (
         aiohttp.ClientError,
         aiohttp.http_exceptions.HttpProcessingError,
@@ -174,11 +175,6 @@ async def parse(url: str, session: ClientSession, **kwargs) -> set:
         try:
             bs = soup.find("div", class_="wprm-recipe-container")
             data_dict = transform_recipe_healthyfitness(bs)
-            # logger.debug(bs)
-            # data.append([f'{url},{category_meal_link["category"].loc[category_meal_link["link"]==url].item()},{bs}'])
-            # logger.debug(data)
-            # category = category_meal_link["category"].loc[category_meal_link["link"]==url]
-            # data = [{"url": url, "category": category, "recipe": data_dict}]
             data["url"] = url
             data["category"] = category
             data["recipe"] = [data_dict]
@@ -186,14 +182,14 @@ async def parse(url: str, session: ClientSession, **kwargs) -> set:
             return data
 
         except Exception as e:
-            #print(category)
             logger.debug(e)
             return data
 
 
 async def parse_to_file(file: IO, url: str, **kwargs) -> None:
     """Write the found HREFs from 'url' to 'file'."""
-    res = await parse(url=url, **kwargs)
+    semaphore = asyncio.Semaphore(10)
+    res = await parse(url=url, semaphore=semaphore ,**kwargs)
     if not res:
         return None
 
@@ -216,15 +212,17 @@ async def write_file(file: IO, urls: set, **kwargs) -> None:
     async with ClientSession() as session:
         tasks = []
         for url in urls:
-            tasks.append(
-                parse_to_file(file=file, url=url, session=session, **kwargs)
-            )
+                tasks.append(
+                    parse_to_file(file=file, url=url, session=session, **kwargs)
+                )
         await asyncio.gather(*tasks)
 
 
 if __name__ == "__main__":
     import pathlib
     import sys
+
+    # limit = asyncio.Semaphore(10)
 
     assert sys.version_info >= (3, 7), "Script requires Python 3.7+."
     here = pathlib.Path(__file__).parent

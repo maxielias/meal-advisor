@@ -13,7 +13,7 @@ from streamlit.delta_generator import DeltaGenerator
 from PIL import Image
 from typing import Optional
 # from config_files.api_keys import google_user, google_api_key, nutritionix_app_id, nutritionix_api_key
-from functions import get_random_meal_api, filter_mealdb_ingredients
+from functions import get_random_meal_api, filter_mealdb_ingredients, get_daily_meal_plan
 from vct_calculator import calculate_bmr, calculate_fat_perc, calculate_macros
 
 
@@ -84,11 +84,16 @@ with st.container():
             fat_gr = macros_required["fat"][0]
 
             st.write("Calculation's summary")
+
+            st.write(f"Daily calories intake to maintain weight should be {bmr}")
         
             st.write(f"Recommended carbs intake is {carbs_gr} gr daily")
             st.write(f"Recommended proteins intake is {proteins_gr} gr daily")
             st.write(f"Recommended fat intake is {fat_gr} gr daily")
 
-            recipes_suggestion = df_recipes["title"][df_recipes["calories"]<=carbs_gr]
-            st.write(recipes_suggestion)
+            # recipes_suggestion = df_recipes["title"][df_recipes["calories"]<=carbs_gr]
+            df_meal_plan = get_daily_meal_plan(df=df_recipes, filter_col="category", filters=["main-courses", ["breakfast", "desserts", "snacks"]], qty=2, tot_cal=bmr, sum_col="calories")
+
+            st.write(df_meal_plan)
+            st.write(df_meal_plan["calories"].sum())
 
