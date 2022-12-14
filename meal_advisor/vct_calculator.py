@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 from math import log10
+from random import seed
+from random import randrange, randint
+from scipy.optimize import minimize
 
 
 params = {
@@ -93,23 +96,69 @@ def calculate_macros(bmr:float):
 
     return  macros_required
 
+def obj_func(x):
 
-def get_daily_meal_plan(df, filter_col, filters, qty, tot_cal, sum_col):
-    '''condition = True
-    while condition:'''
+    return sum(x)
+
+
+def eq_cons_1(x, tot_cal):
+
+    return sum(x) - tot_cal
+
+
+def get_daily_meal_plan(df, filter_col, optimize_col, filters, tot_cal, n):
+    """
+    Calculate daily plan meal with scipy optimizer
+    """
+    df = df.dropna(subset=[optimize_col])
+    df = df.drop_duplicates(subset=["url"], keep="first").reset_index(drop=True)
+
+    dict_bounds = {}
+    bounds = []
+    for i in range(sum(n)): 
+        dict_bounds["bounds" + str(i)] = (df[optimize_col].min(), df[optimize_col].max())
+        bounds.append(dict_bounds["bounds" + str(i)])
+
+    print(bounds)
+
+    constraint1 = {"type": "eq", "fun": eq_cons_1, "args": [tot_cal]}
+
+    constraints = [constraint1]
+
+    random_n = randint(0, 100)
+    seed(random_n)
+
+    dict_rand = {}
+    list_rand = []
+    for i in range(sum(n)):
+        dict_rand["rand" + str(i)] = randrange(0, len(df) + 1, 1)
+        list_rand.append(dict_rand["rand" + str(i)])
+
+    print(list_rand)
+
+    dict_x0 = {}
+    list_x0 = []
+    for i in range(sum(n)):
+        dict_x0["x" + str(i)] = df.loc[list_rand[i]][optimize_col]
+        list_x0.append(dict_x0["x" + str(i)])
+    
+    x0 = list_x0
+
+    print(x0)
+
+    result = minimize(obj_func, x0, method="SLSQP", bounds=bounds, constraints=constraints)
+
+    result_sorted = np.sort(result.x)
+    reversed_result = list(reversed(result_sorted))
+
     df_meal_plan = pd.DataFrame([], columns=df.columns)
-    for f in filters:
-        if isinstance(f, list):
+
+    for i, f in enumerate(filters):
+        for _ in range(n[i]):
             df_filtered = df[df[filter_col].isin(f)]
-        else:
-            df_filtered = df[df[filter_col]==f]
-        if df_filtered.empty:
-            pass
-        else:
-            df_filtered = df_filtered.sample(n=qty, random_state=0)
-            df_meal_plan = pd.concat([df_meal_plan, df_filtered])# df_meal_plan.append(df_filtered)
-            '''if tot_cal * 0.8 > df_meal_plan[sum_col].sum() > tot_cal * 1.2:
-                condition=False'''
+            df_filtered["diff"] = abs([rs for rs in reversed_result][0] - df_filtered[optimize_col])
+            df_meal_plan = pd.concat([df_meal_plan, df_filtered[df_filtered["diff"]==df_filtered["diff"].min()]])
+            reversed_result.pop(0)
 
     return df_meal_plan
 

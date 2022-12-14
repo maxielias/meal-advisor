@@ -92,8 +92,8 @@ with st.container():
             st.write(f"Recommended fat intake is {fat_gr} gr daily")
 
             # recipes_suggestion = df_recipes["title"][df_recipes["calories"]<=carbs_gr]
-            df_meal_plan = get_daily_meal_plan(df=df_recipes, filter_col="category", filters=["main-courses", ["breakfast", "desserts", "snacks"]], qty=2, tot_cal=bmr, sum_col="calories")
-
-            st.write(df_meal_plan)
+            df_meal_plan = get_daily_meal_plan(df_recipes, "category", "calories", [["main-courses", "side-dishes"], ["breakfast", "dessert", "snacks"]], bmr, [2,2])
+            
+            st.write(df_meal_plan[["title", "category", "calories"]])
             st.write(df_meal_plan["calories"].sum())
 
