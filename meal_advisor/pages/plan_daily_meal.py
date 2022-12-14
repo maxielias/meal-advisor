@@ -95,5 +95,4 @@ with st.container():
             df_meal_plan = get_daily_meal_plan(df_recipes, "category", "calories", [["main-courses", "side-dishes"], ["breakfast", "dessert", "snacks"]], bmr, [2,2])
             
             st.write(df_meal_plan[["title", "category", "calories"]])
-            st.write(df_meal_plan["calories"].sum())
-
+            st.write(f'calories suggested {bmr}, and sum of calories from planned meals is {df_meal_plan["calories"].sum()}')

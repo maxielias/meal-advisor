@@ -18,7 +18,7 @@ params = {
 }
 
 
-def calculate_bmr(gender:bool, age:float, weight:float, height:float, activity_factor:float, method:int=0 ,fat_perc:float=0.0):
+def calculate_bmr(gender:bool, age:float, weight:float, height:float, activity_factor:float, method:int=0, fat_perc:float=0.0):
     """
     Measures in cm and kg -- 
     Activity factor:
