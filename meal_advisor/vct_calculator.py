@@ -157,7 +157,12 @@ def get_daily_meal_plan(df, filter_col, optimize_col, filters, tot_cal, n):
         for _ in range(n[i]):
             df_filtered = df[df[filter_col].isin(f)]
             df_filtered["diff"] = abs([rs for rs in reversed_result][0] - df_filtered[optimize_col])
-            df_meal_plan = pd.concat([df_meal_plan, df_filtered[df_filtered["diff"]==df_filtered["diff"].min()]])
+            if len(df_filtered) > 1:
+                randinteger = randrange(0, len(df_filtered) + 1, 1)
+                df_to_append = df_filtered.iloc[randinteger]
+            else:
+                df_to_append = df_filtered
+            df_meal_plan = pd.concat([df_meal_plan, df_to_append[df_to_append["diff"]==df_to_append["diff"].min()]])
             reversed_result.pop(0)
 
     return df_meal_plan
