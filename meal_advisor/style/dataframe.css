@@ -19,7 +19,7 @@
     cursor: pointer;
 }
 
-/*.dataframe th{
+.dataframe th{
 background: rgb(18, 255, 251);
 background: linear-gradient(0deg, rgb(52, 255, 252) 0%, rgb(161, 255, 253) 100%);
 padding: 10px;
