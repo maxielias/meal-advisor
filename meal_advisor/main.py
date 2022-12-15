@@ -26,7 +26,7 @@ lottie_anim_background = load_lottie_assets("https://assets5.lottiefiles.com/pac
 img_profile1 = Image.open("meal_advisor/images/profile-photo-color-background-1.jpg")
 
 #---- HEADER SECTION ----
-with open("meal_advisor\style\style.css") as f:
+with open("meal_advisor\\style\\style.css") as f:
     st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
     with st.container():
         st.title("Welcome to the meal advisor :sunglasses:")
