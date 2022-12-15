@@ -41,14 +41,11 @@ with open("meal_advisor/data/list_of_ingredients.txt", encoding="utf-8") as f:
 #---- PARAMETERS ----
 
 #---- HEADER SECTION ----
-with open("meal_advisor\style\style.css") as f:
-    st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
+with open("meal_advisor/style/style.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     st.title("Let's search for a recipe, Mr. Meal Advisor :sunglasses:")
 
-
-    #---- CONTAINER 1 ----
     with st.container():
-        
         with open("meal_advisor/style/dataframe.css") as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
             st.header("Filter meals by main ingredient, category and area")

@@ -15,12 +15,9 @@ from typing import Optional
 from functions import get_random_meal_api
 
 
-#---- CONFIG SETUP ----
 st.set_page_config(page_title="Meal Advisor", page_icon=":cake:", layout="wide")
 # st.session_state
 
-
-#---- LOAD ASSETS ----
 def load_lottie_assets(url):
     r = requests.get(url)
     if r.status_code != 200:
@@ -28,18 +25,10 @@ def load_lottie_assets(url):
     return r.json()
 
 
-#---- PARAMETERS ----
+with open("meal_advisor/style/style.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True) 
+    st.title("Inspire me, Mr. Meal Advisor :sunglasses:")
 
-
-
-#---- HEADER SECTION ----
-with open("meal_advisor\style\style.css") as f:
-    st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
-    with open("meal_advisor/style/center_vertical_horizontal.css") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)   
-        st.title("Inspire me, Mr. Meal Advisor :sunglasses:")
-
-    #---- BODY SECTION ----
     with st.container():
         left_column, right_column = st.columns(2)
         
