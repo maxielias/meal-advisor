@@ -77,7 +77,7 @@ with open("meal_advisor/style/style.css") as f:
                 elif filter_recipe_by_category:
                     meal_options_df = meal_options_df[(meal_options_df["strArea"]==filter_recipe_by_area)]
             
-                filtered_recipes = selectbox("Select meal", [m for m in meal_options_df["strMeal"]])
+                filtered_recipes = selectbox("Select meal", list(set([m for m in meal_options_df["strMeal"]])))
                 
                 if filtered_recipes:
                     meal_data = [m for m in mealdb_json if m["strMeal"]==filtered_recipes][0]
