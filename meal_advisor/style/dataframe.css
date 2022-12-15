@@ -1,8 +1,9 @@
 .mystyle {
-    font-size: 11pt; 
+    font-size: 9pt; 
     font-family: Arial;
     border-collapse: collapse; 
     border: 1px solid silver;
+    opacity: 1
 
 }
 
@@ -19,7 +20,14 @@
     cursor: pointer;
 }
 
-.dataframe th{
+.css-3099al th, .css-3099al td {
+    color: #000000;
+    padding: 6px 13px;
+    background-color: rgb(255, 171, 68);
+    opacity: 0.5;
+}
+
+/*.dataframe th{
 background: rgb(18, 255, 251);
 background: linear-gradient(0deg, rgb(52, 255, 252) 0%, rgb(161, 255, 253) 100%);
 padding: 10px;
