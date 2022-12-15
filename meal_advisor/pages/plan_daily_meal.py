@@ -38,7 +38,9 @@ with open("meal_advisor/style/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     with st.container():
         st.title("Plan your daily meals :sunglasses:")
-        st.write("---")
+        st.write("""
+        The goal is to create a daily menu according to our recommended daily calories intake for you 
+        """)
 
     with st.container():
         left_column, center_column, right_column = st.columns(3)
