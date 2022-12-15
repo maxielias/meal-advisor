@@ -1,15 +1,32 @@
-.container {
-  width: 100%;
-  background: rgb(159, 144, 175);
-  aspect-ratio: 100 / 29;
-  border: 10px solid rgb(92 65 93 1);
-  border-radius: 10px;
+body{
+    background-color: rgb(255, 171, 68);
+    opacity: 0.7;
+    
 }
 
-.span-container {
-  width: 100%;
-  background: rgb(159, 144, 175);
-  aspect-ratio: 100 / 29;
-  border: 10px solid rgb(92 65 93 1);
-  border-radius: 10px;
+h1 {
+    text-shadow: 0 0 5px #000000, 0 0 10px #ffffff;
+    color: #ffffff;
 }
+
+h2 {
+    text-shadow: 0 0 5px #000000, 0 0 10px #ffffff;
+    color: #ffffff;
+}
+
+h3 {
+    text-shadow: 0 0 5px #000000, 0 0 10px #ffffff;
+    color: #ffffff;
+}
+
+p {
+    text-shadow: 0 0 5px #000000, 0 0 10px #ffffff;
+    color: #ffffff;
+}
+
+.stApp {
+    background-image: url("https://images.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg?auto=compress&cs=tinysrgb&w=1600");
+    background-attachment: fixed;
+    background-size: cover
+}
+

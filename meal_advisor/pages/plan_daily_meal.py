@@ -40,59 +40,59 @@ with open("meal_advisor/style/style.css") as f:
         st.title("Plan your daily meals :sunglasses:")
         st.write("---")
 
-with st.container():
-    left_column, center_column, right_column = st.columns(3)
-    
-    with left_column:
-        gender_selection = selectbox("Select gender", ["Male", "Female"])
-        gender_bool = 0 if gender_selection == "Male" else 1
-        age_selection = st.text_input("Input age")
-        method_selection = selectbox("Select calculation method", ["Katch-McArdle Formula", "Mifflin St Jeor Formula"])
-        method_int = 0 if method_selection == 0 else 1
-    
-    with center_column:    
-        weight_selection = st.text_input("Input weight (in kg)")
-        height_selection = st.text_input("Input height (in cm)")
-        activity_factor_slider = st.slider("Choose activity factor (1 to 6)", min_value=1, max_value=6, step=1)
-    
-    with right_column:    
-        neck_selection = st.text_input("Input neck (in cm)")
-        waist_selection = st.text_input("Input waist (in cm)")
-        hip_selection = st.text_input("Input hip (in cm)")
-
-    try:
-        age_input = float(age_selection)
-        weight_input = float(weight_selection)
-        height_input = float(height_selection)
-        neck_input = float(neck_selection)
-        waist_input = float(waist_selection)
-        hip_input = float(hip_selection)
-
-    except:
-        pass
-
-    calculate_button = st.button("Calculate calories")
-    if calculate_button:
-        st.write("---")
-        with st.container():
-            fp = calculate_fat_perc(gender=gender_bool, height=height_input, neck=neck_input, waist=waist_input, hip=hip_input)
-            bmr = calculate_bmr(method=method_int, gender=gender_bool, age=age_input, weight=weight_input, height=height_input, activity_factor=activity_factor_slider, fat_perc=fp)
-            macros_required = calculate_macros(bmr)
-
-            carbs_gr = macros_required["carbs"][0]
-            proteins_gr = macros_required["proteins"][0]
-            fat_gr = macros_required["fat"][0]
-
-            st.write("Calculation's summary")
-
-            st.write(f"Daily calories intake to maintain weight should be {bmr}")
+    with st.container():
+        left_column, center_column, right_column = st.columns(3)
         
-            st.write(f"Recommended carbs intake is {carbs_gr} gr daily")
-            st.write(f"Recommended proteins intake is {proteins_gr} gr daily")
-            st.write(f"Recommended fat intake is {fat_gr} gr daily")
+        with left_column:
+            gender_selection = selectbox("Select gender", ["Male", "Female"])
+            gender_bool = 0 if gender_selection == "Male" else 1
+            age_selection = st.text_input("Input age")
+            method_selection = selectbox("Select calculation method", ["Katch-McArdle Formula", "Mifflin St Jeor Formula"])
+            method_int = 0 if method_selection == 0 else 1
+        
+        with center_column:    
+            weight_selection = st.text_input("Input weight (in kg)")
+            height_selection = st.text_input("Input height (in cm)")
+            activity_factor_slider = st.slider("Choose activity factor (1 to 6)", min_value=1, max_value=6, step=1)
+        
+        with right_column:    
+            neck_selection = st.text_input("Input neck (in cm)")
+            waist_selection = st.text_input("Input waist (in cm)")
+            hip_selection = st.text_input("Input hip (in cm)")
 
-            # recipes_suggestion = df_recipes["title"][df_recipes["calories"]<=carbs_gr]
-            df_meal_plan = get_daily_meal_plan(df_recipes, "category", "calories", [["main-courses", "side-dishes"], ["breakfast", "dessert", "snacks"]], bmr, [2,2])
+        try:
+            age_input = float(age_selection)
+            weight_input = float(weight_selection)
+            height_input = float(height_selection)
+            neck_input = float(neck_selection)
+            waist_input = float(waist_selection)
+            hip_input = float(hip_selection)
+
+        except:
+            pass
+
+        calculate_button = st.button("Calculate calories")
+        if calculate_button:
+            st.write("---")
+            with st.container():
+                fp = calculate_fat_perc(gender=gender_bool, height=height_input, neck=neck_input, waist=waist_input, hip=hip_input)
+                bmr = calculate_bmr(method=method_int, gender=gender_bool, age=age_input, weight=weight_input, height=height_input, activity_factor=activity_factor_slider, fat_perc=fp)
+                macros_required = calculate_macros(bmr)
+
+                carbs_gr = macros_required["carbs"][0]
+                proteins_gr = macros_required["proteins"][0]
+                fat_gr = macros_required["fat"][0]
+
+                st.write("Calculation's summary")
+
+                st.write(f"Daily calories intake to maintain weight should be {bmr}")
             
-            st.write(df_meal_plan[["title", "category", "calories", "url"]])
-            st.write(f'calories suggested {bmr}, and sum of calories from planned meals is {df_meal_plan["calories"].sum()}')
+                st.write(f"Recommended carbs intake is {carbs_gr} gr daily")
+                st.write(f"Recommended proteins intake is {proteins_gr} gr daily")
+                st.write(f"Recommended fat intake is {fat_gr} gr daily")
+
+                # recipes_suggestion = df_recipes["title"][df_recipes["calories"]<=carbs_gr]
+                df_meal_plan = get_daily_meal_plan(df_recipes, "category", "calories", [["main-courses", "side-dishes"], ["breakfast", "dessert", "snacks"]], bmr, [2,2])
+                
+                st.write(df_meal_plan[["title", "category", "calories", "url"]])
+                st.write(f'calories suggested {bmr}, and sum of calories from planned meals is {df_meal_plan["calories"].sum()}')

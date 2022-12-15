@@ -22,35 +22,37 @@ def load_lottie_assets(url):
 
 lottie_anim1 = load_lottie_assets("https://assets8.lottiefiles.com/temp/lf20_nXwOJj.json")
 lottie_anim2 = load_lottie_assets("https://assets3.lottiefiles.com/packages/lf20_3GIrwN3h0z.json")
+lottie_anim_background = load_lottie_assets("https://assets5.lottiefiles.com/packages/lf20_xsrma5om.json")
 img_profile1 = Image.open("meal_advisor/images/profile-photo-color-background-1.jpg")
 
-#---- LOAD CSS ----
-
-
 #---- HEADER SECTION ----
-with open("meal_advisor/style/style.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+with open("meal_advisor\style\style.css") as f:
+    st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
     with st.container():
         st.title("Welcome to the meal advisor :sunglasses:")
-        st.write("---")
 
-        left_column, center_column, right_column  = st.columns(3)
+    with st.container():
+        st.header("A humble project made with Streamlit:iphone: and Python:snake:")
+        st.subheader("Hope you find it useful :smile:")
+
+    with st.container():
+        left_column, center_column, right_column = st.columns(3)
         with left_column:
-            st.header("A humble project made with Streamlit:iphone: and Python:snake:")
-            st.subheader("Hope you find it useful :smile:")
-        
+            st.title("Out of ideas? Try a random recipe")
+            st.write(
+                """Try one of our recipes"""
+                )
         with center_column:
-            st_lottie(lottie_anim2, height=300, key="food_animation2")
-        
+            st.title("Look for a meal that suits you")
+            st.write(
+                """You can filter by main ingredient, style and other"""
+                )
         with right_column:
             st.title("Plan your daily meals")
-            st.write("#")
             st.write(
                 """The goal is to calculate your daily calories expenditure,
                 calculate your macros and plan your meals ahead"""
                 )
-        st.write("---")
-
 
 #---- PARAMETERS ----
 with st.container():
@@ -70,5 +72,3 @@ with st.container():
         plan_meal = st.button("Let's plan my meals for the day")
         if random_meal:
             switch_page("plan_daily_meal")
-    
-    st.write("---")

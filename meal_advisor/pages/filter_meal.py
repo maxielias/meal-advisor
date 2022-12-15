@@ -41,91 +41,93 @@ with open("meal_advisor/data/list_of_ingredients.txt", encoding="utf-8") as f:
 #---- PARAMETERS ----
 
 #---- HEADER SECTION ----
-st.title("Let's search for a recipe, Mr. Meal Advisor :sunglasses:")
+with open("meal_advisor\style\style.css") as f:
+    st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
+    st.title("Let's search for a recipe, Mr. Meal Advisor :sunglasses:")
 
 
-#---- CONTAINER 1 ----
-with st.container():
-    
-    with open("meal_advisor/style/dataframe.css") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-        st.header("Filter meals by main ingredient, category and area")
-
-        reset_button = st.button("Reset options") #, on_click=st.experimental_rerun())
-
-        if reset_button:
-            st.experimental_rerun()
+    #---- CONTAINER 1 ----
+    with st.container():
         
-        ingredient_list = list_of_ingredients
-        filter_recipe_by_ingredient = selectbox("Select main ingredient", list_of_ingredients)
+        with open("meal_advisor/style/dataframe.css") as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+            st.header("Filter meals by main ingredient, category and area")
 
-        if filter_recipe_by_ingredient:
-            meal_options = filter_mealdb_ingredients(data_json=mealdb_json, ingredient=filter_recipe_by_ingredient)
-            meal_options_df = pd.DataFrame(meal_options)
+            reset_button = st.button("Reset options") #, on_click=st.experimental_rerun())
 
-            list_of_categories = list(set([c for c in meal_options_df["strCategory"]]))
-            filter_recipe_by_category = selectbox("Select category", list_of_categories)
-
-            list_of_areas = list(set([c for c in meal_options_df["strArea"]]))
-            filter_recipe_by_area = selectbox("Select country", list_of_areas)
-
-            if filter_recipe_by_category and filter_recipe_by_area:
-                meal_options_df = meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category) & (meal_options_df["strArea"]==filter_recipe_by_area)]
-
-            elif filter_recipe_by_category:
-                meal_options_df = meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category)]
-
-            elif filter_recipe_by_category:
-                meal_options_df = meal_options_df[(meal_options_df["strArea"]==filter_recipe_by_area)]
-        
-            filtered_recipes = selectbox("Select meal", [m for m in meal_options_df["strMeal"]])
+            if reset_button:
+                st.experimental_rerun()
             
-            if filtered_recipes:
-                meal_data = [m for m in mealdb_json if m["strMeal"]==filtered_recipes][0]
+            ingredient_list = list_of_ingredients
+            filter_recipe_by_ingredient = selectbox("Select main ingredient", list_of_ingredients)
 
-        show_recipe_button = st.button("Show chosen recipe")
+            if filter_recipe_by_ingredient:
+                meal_options = filter_mealdb_ingredients(data_json=mealdb_json, ingredient=filter_recipe_by_ingredient)
+                meal_options_df = pd.DataFrame(meal_options)
 
-        if show_recipe_button:
-            try:
-                meal_img = meal_data["strMealThumb"]
-                left_column, center_column, right_column  = st.columns(3)
-                with left_column:
-                    #meal_title = st.session_state["random_meal_json"]["strMeal"]
-                    #meal_img = st.session_state["random_meal_json"]["strMealThumb"]
+                list_of_categories = list(set([c for c in meal_options_df["strCategory"]]))
+                filter_recipe_by_category = selectbox("Select category", list_of_categories)
 
-                    html_str = f"""
-                    <style>
-                    p.a {{
-                    font: bold 30px Courier;
-                    }}
-                    </style>
-                    <p class="a">{filtered_recipes}</p>
-                    """
-                    st.markdown(html_str, unsafe_allow_html=True)
+                list_of_areas = list(set([c for c in meal_options_df["strArea"]]))
+                filter_recipe_by_area = selectbox("Select country", list_of_areas)
 
-                    with open("meal_advisor/style/border_style_1.css") as f:
-                        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)   
-                        st.image(meal_img) #, use_column_width=True)
+                if filter_recipe_by_category and filter_recipe_by_area:
+                    meal_options_df = meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category) & (meal_options_df["strArea"]==filter_recipe_by_area)]
+
+                elif filter_recipe_by_category:
+                    meal_options_df = meal_options_df[(meal_options_df["strCategory"]==filter_recipe_by_category)]
+
+                elif filter_recipe_by_category:
+                    meal_options_df = meal_options_df[(meal_options_df["strArea"]==filter_recipe_by_area)]
+            
+                filtered_recipes = selectbox("Select meal", [m for m in meal_options_df["strMeal"]])
                 
-                with center_column:
-                    recipe_ingredient_keys = [k for k in meal_data.keys() if k.startswith("strIngredient")]
-                    recipe_amount_keys = [k for k in meal_data.keys() if k.startswith("strMeasure")]
-                    ingredient_dict = {"Amount": [meal_data[mk] for mk in recipe_amount_keys], # if (not st.session_state["random_meal_json"][mk]=="")], # or (not st.session_state["random_meal_json"][mk]=="NA")],
-                                "Ingredients": [meal_data[ik] for ik in recipe_ingredient_keys]} # if (not st.session_state["random_meal_json"][ik]=="")]} # or (not st.session_state["random_meal_json"][ik]=="NA")]}
-                    ingredient_df = pd.DataFrame(ingredient_dict)
-                    ing_df_no_idx = ingredient_df.style.hide_index()
+                if filtered_recipes:
+                    meal_data = [m for m in mealdb_json if m["strMeal"]==filtered_recipes][0]
 
-                    with open("meal_advisor/style/dataframe.css") as f:
-                        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-                        # st.table(ingredient_df.loc[~(ingredient_df["Ingredients"]=="")].style.hide_index())
-                        st.write(ingredient_df.loc[~(ingredient_df["Ingredients"]=="")].style.hide_index().to_html(), unsafe_allow_html=True)
+            show_recipe_button = st.button("Show chosen recipe")
 
-                with right_column:
-                    with open("meal_advisor/style/center_vertical_horizontal.css") as f:
-                        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-                        st.write(meal_data["strInstructions"])
+            if show_recipe_button:
+                try:
+                    meal_img = meal_data["strMealThumb"]
+                    left_column, center_column, right_column  = st.columns(3)
+                    with left_column:
+                        #meal_title = st.session_state["random_meal_json"]["strMeal"]
+                        #meal_img = st.session_state["random_meal_json"]["strMealThumb"]
 
-            except Exception as e:
-                st.write(e)
-                st.warning("You need to select at least one ingredient and a recipe")
-                
+                        html_str = f"""
+                        <style>
+                        p.a {{
+                        font: bold 30px Courier;
+                        }}
+                        </style>
+                        <p class="a">{filtered_recipes}</p>
+                        """
+                        st.markdown(html_str, unsafe_allow_html=True)
+
+                        with open("meal_advisor/style/border_style_1.css") as f:
+                            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)   
+                            st.image(meal_img) #, use_column_width=True)
+                    
+                    with center_column:
+                        recipe_ingredient_keys = [k for k in meal_data.keys() if k.startswith("strIngredient")]
+                        recipe_amount_keys = [k for k in meal_data.keys() if k.startswith("strMeasure")]
+                        ingredient_dict = {"Amount": [meal_data[mk] for mk in recipe_amount_keys], # if (not st.session_state["random_meal_json"][mk]=="")], # or (not st.session_state["random_meal_json"][mk]=="NA")],
+                                    "Ingredients": [meal_data[ik] for ik in recipe_ingredient_keys]} # if (not st.session_state["random_meal_json"][ik]=="")]} # or (not st.session_state["random_meal_json"][ik]=="NA")]}
+                        ingredient_df = pd.DataFrame(ingredient_dict)
+                        ing_df_no_idx = ingredient_df.style.hide_index()
+
+                        with open("meal_advisor/style/dataframe.css") as f:
+                            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+                            # st.table(ingredient_df.loc[~(ingredient_df["Ingredients"]=="")].style.hide_index())
+                            st.write(ingredient_df.loc[~(ingredient_df["Ingredients"]=="")].style.hide_index().to_html(), unsafe_allow_html=True)
+
+                    with right_column:
+                        with open("meal_advisor/style/center_vertical_horizontal.css") as f:
+                            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+                            st.write(meal_data["strInstructions"])
+
+                except Exception as e:
+                    st.write(e)
+                    st.warning("You need to select at least one ingredient and a recipe")
+                    
